@@ -1,0 +1,64 @@
+extends layout
+
+block content
+  .page-header
+    h1.page-title.text-uppercase My polls
+
+  .container
+    if polls.length > 0
+        .row
+         each poll in polls
+          .col-lg-5
+              .card
+                .card-content
+                  h3= poll.title
+                  .card-body
+                    p Created at: #{poll.at}
+                    p Last update: #{poll.lastUpdate}
+
+                  .card-footer
+                    .row
+                      a.btn.btn-flat.btn-warning(href=`contest/${poll.id}`) Vote page
+                      .col.sm-6
+                        form(action=`poll/delete/${poll.id}`, method='POST')
+                          input(type='submit', value='Delete poll', class='btn btn-flat btn-warning')
+
+        hr
+        br
+        p.text-center
+          a.btn.btn-info.btn-raised.btn-lg(href='#newpoll',  data-toggle='modal') Create poll
+    else
+
+        h1.text-center.text-extreme-big  🤔
+        h2.text-uppercase.text-center Yo', nigga. No polls?
+          br
+          span you're weird
+        p.text-center
+          br
+        p.text-center
+          a(href='#newpoll' data-toggle='modal', class='btn btn-raised btn-info btn-block btn-lg text-uppercase', role='button') My bad, bro. Let me create a poll
+
+    .modal.fade#newpoll(role='dialog')
+      .modal-dialog(role='document')
+        .modal-content
+          button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+            i.material-icons close
+          br
+          .modal-body
+            form.form-horizontal(method='POST', action='/poll/create')
+              fieldset
+               legend New Poll
+               .form-group
+                 label.col-md-6.control-label(for='pollTitle') Your question
+                 .col-md-10
+                   input.form-control( name='pollTitle',type='text', placeholder='EX: Why the chicken cross the street?', required)
+               .form-group
+                 label.col-md-2.control-label.answers(for='pollAnswer')  Your answers
+                 .col-md-10.answers-container
+                   input#pollAnswer.form-control(name='answers', type='text', placeholder='It was running away from you, bro.',required)
+
+              .form-group
+                .col-sm-6
+                  a.btn.btn-info.btn-raised(name='newOptionButton') New answer
+                .col-sm-6
+                  button.btn.btn-success.btn-raised(name='saveButton', type='submit') Create poll

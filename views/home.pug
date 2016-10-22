@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1.text-uppercase Poll Yard
+  p.lead.text-uppercase Lastest polls
+  hr
+  .row
+    .col-sm-6
+      if polls.length != 0
+        each poll in polls
+          h5= poll.title
+      else
+        .container.center-block.text-center.text-uppercase
+          h1.text-extreme-big 🤔
+
+          h1 Bro, can you check again later?
+          h3 It seems to be no polls in the database. 🙄
